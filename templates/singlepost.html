@@ -58,6 +58,7 @@
             <!-- heading -->
             {% for entry in entries %}
             <h1><a href="/post/{{ entry.id }}">{{ entry.title }}</a></h1>
+                
  
             <!-- content posts -->
             <article>
@@ -66,19 +67,28 @@
                     
                     <div class="group2 col-sm-6 col-md-6">
                         <span class="glyphicon glyphicon-pencil"></span> <a href="/post/{{ entry.title }}">{{ entry.t_comments }} comments </a>                              
-                          <span class="glyphicon glyphicon-time"></span>posted on {{ entry.p_date }}                         
+                          <span class="glyphicon glyphicon-time"></span>posted on {{ entry.p_date }}                        
+
                     </div>
                 </div>
                 <br>
                 <hr>              
                 <p class="lead">{{ entry.post }}</p>
                 <hr>
-                {% endfor %}
+                
                 
             </article>
+            {% endfor %}
+
+            <div > {% for entry in entries %}
+                <form action="/post/{{ entry.title }}" method="post" role="form" class="clearfix">
+                    <button type="submit" class="btn btn-danger btn btn-primary btn-xs pull-right" name="option" value="Delete">Delete this post</button>
+                </form>
+                    {% endfor %}
+            </div>
+
             </div><!-- closing of class col md-8-->
-        
-            
+                    
             <div class="col-md-4"> 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -95,12 +105,12 @@
 
 
             <!-- showing comments-->
-                {% for comment in comments %}
+                
                 <h4>COMMENTS:</h4>
+                {% for comment in comments %}
                 <p>{{ comment.c_name }} Says : {{ comment.comment }}</p>
                 {% endfor %}
-            </div>
-        </div>
+            
         </div><!-- closing of row div-->
     </div><!-- closing of container div-->
 
@@ -124,7 +134,7 @@
         </div>
  
         <div class="col-md-12 form-group text-right">
-            <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+            <button type="submit" class="btn btn-primary" name="option" value="submit">Submit</button>
         </div>
  
     </form>  
@@ -141,8 +151,8 @@
 </div>
 
     <!-- Jquery and Bootstrap Script files -->
-    <script src="jquery-2.0.3.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename="jquery-1.11.1") }}"></script>
+    <script src="{{ url_for('static', filename="bootstrap/js/bootstrap.min.js") }}"></script>
 </body>
 </html>
 

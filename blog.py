@@ -101,12 +101,9 @@ def about():
 
 def show_post(post_title):
   if request.method=='POST':
-    if request.form['submit']=="submit":
+    if request.form['option']=="submit":
       print "in submit"
       db=get_db()
-      #db.execute('insert into posts (title,post) values (?,?)',[request.form['title'],request.form['content']])
-      #db.execute('insert into posts (title,post) values ("second","i am jac")')
-      #db.execute('update posts set comment = (?),c_name = (?) where title = (?)',[request.form['comment'],request.form['c_name'],post_title])
       db.execute('update posts set t_comments = t_comments+1 where title = (?)',[post_title])
       db.execute('insert into comments(c_id,c_name,comment) values (?,?,?)',[post_title,request.form['c_name'],request.form['comment']])
 
@@ -114,6 +111,12 @@ def show_post(post_title):
       db.commit()
       flash(' Details added')
       print "asd"+post_title
+    if request.form['option']=="delete":
+         db=get_db()
+         db.execute('delete from comments where c_id = (?)',[post_title])
+         db.execute('delete from posts where title = (?)',[post_title])
+         db.commit()
+         return redirect(url_for('view'))
   db = get_db()
   cur = db.execute('select title,catogory,t_comments,p_date,post from posts where title= ?',[post_title])
   entries = cur.fetchall()
