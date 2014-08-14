@@ -1,0 +1,137 @@
+<!-- Home page of J's blog-->
+<!DOCTYPE html>
+<html lang="en">
+<head>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A Bootstrap Blog Template">
+    <meta name="author" content="Jacob Jose">
+ 
+    <title>Home</title>
+ 
+    <!-- Bootstrap CSS file -->
+    <link href="{{ url_for('static', filename="bootstrap/css/bootstrap.min.css") }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='blog.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename="bootstrap/css/bootstrap-theme.min.css") }}" rel="stylesheet" />
+
+</head> 
+<body>
+<div class="container">
+    <header class="navbar navbar-inverse navbar-fixed-top bs-docs-nav" role="banner">         
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="{{ url_for('welcome') }}" class="navbar-brand">J's Blog Engine!</a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+            <form action="{{ url_for('home') }}" method="post" class="navbar-form navbar-right" >
+                {% if not session.logged_in %}
+                <button type="submit" class="btn btn-default" name="opt"  value="login">LOGIN</button>
+                {% else %}
+                
+                <!-- Single button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    Signed in as {{ session.username }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </div>
+                {% endif %}
+            </form>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('add') }}">New Post</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                <li><a href="{{ url_for('about') }}">About</a></li>
+            </ul>
+        </nav>
+    </div>
+    </header>
+
+<!-- body content: posts and side bar-->
+
+    {% if session.logged_in %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">           
+            <h1>Latest Posts</h1>
+ 
+            <!-- list of posts -->
+            <article>
+                {% for entry in entries %}
+                <h2><a href="/post/{{ entry.title }}">{{ entry.title }}</a></h2>
+ 
+                <div class="row">
+                    
+                    <div class="group2 col-sm-6 col-md-6">
+                        <span class="glyphicon glyphicon-pencil"></span> <a href="singlepost.html#comments">{{ entry.t_comments}} comments</a>                             
+                          <span class="glyphicon glyphicon-time" class="align-right"></span> posted on {{ entry.p_date }}                         
+                    </div>
+                </div>
+ 
+                <p class="lead">{{ entry.post }}</p>
+ 
+                <p>...</p>
+ 
+                <p class="text-right">
+                    <a href="/post/{{ entry.title }}">
+                        continue reading...
+                    </a>
+                </p>
+                {% else %}
+                <hr>
+                <br>
+                <div class="alert alert-info">
+                    <a href="/" class="close" data-dismiss="alert">&times;</a><br>
+                    <strong>Sorry!</strong>  No Blog Post So Far....
+                </div>
+                {% endfor %}
+            </article>
+            </div>
+    {% endif %}            
+            
+             {% if session.logged_in %}
+            <div class="col-md-4"> 
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>Latest Posts</h4>
+                    </div>
+                    {% for entry in entries %}
+                    <ul class="list-group">
+                        <li class="list-group-item"><a href="/post/{{ entry.title }}">{{ entry.title }}</a></li>
+                    </ul>
+                    {% endfor %} 
+                </div>
+            </div>   
+
+            
+            {% endif %}
+        </div><!-- closing of row div-->
+    </div><!-- closing of container div-->
+
+    <footer>
+        <div class="container">
+            <hr />
+            <p class="text-center">Copyright © J's Blog powered by bootsrap and flask</p>
+        </div>
+    </footer>
+</div>
+
+    <!-- Jquery and Bootstrap Script files -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename="jquery-1.11.1") }}"></script>
+    <script src="{{ url_for('static', filename="bootstrap/js/bootstrap.min.js") }}""></script>
+</body>
+</html>
