@@ -28,7 +28,7 @@
             </button>
             <a href="{{ url_for('welcome') }}" class="navbar-brand">J's Blog Engine!</a>
         </div>
-        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+         <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
             <form action="{{ url_for('home') }}" method="post" class="navbar-form navbar-right" >
                 {% if not session.logged_in %}
                 <button type="submit" class="btn btn-default" name="opt"  value="login">LOGIN</button>
@@ -40,11 +40,8 @@
                     Signed in as {{ session.username }} <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
+                        <li><a href="{{ url_for('about') }}">About Me</a></li>
+                        <li><a href="{{ url_for('login') }}">Log out</a></li>
                     </ul>
                 </div>
                 {% endif %}
@@ -123,14 +120,16 @@
     <footer>
         <div class="container">
             <hr />
-            <p class="text-center">Copyright © J's Blog powered by bootsrap and flask</p>
+            <p class="text-center">Copyright © J's Blog powered by bootstrap and flask</p>
         </div>
     </footer>
 </div>
 
     <!-- Jquery and Bootstrap Script files -->
+
+
  
-    <script src="{{ url_for('static', filename="jquery-1.11.1") }}"></script>
+    <script src="{{ url_for('static', filename="jquery.min.js") }}"></script>
     <script src="{{ url_for('static', filename="bootstrap/js/bootstrap.min.js") }}"></script>
 </body>
 </html>

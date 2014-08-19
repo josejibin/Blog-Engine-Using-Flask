@@ -1,4 +1,5 @@
-#blog using flask
+#blog engine using flask
+#written by jacob
 
 import os
 import sqlite3
@@ -30,7 +31,7 @@ def login_required(f):
         if 'logged_in' in session:
             return f(*args, **kwargs)
         else:
-            flash(' You need to login first.')
+            #flash(' You need to login first.')
             return redirect(url_for('login'))
     return wrap
 
@@ -47,7 +48,6 @@ def init_db():
 	db.cursor().executescript(f.read())
      db.commit()
 
-
 def get_db():
   if not hasattr(g,'sqlite_db'):
      g.sqlite_db=connect_db()
@@ -60,7 +60,6 @@ def get_db():
 def add():
   if request.method=='POST':
     if request.form['publish']=="publish":
-    
       db=get_db()
       #db.execute('insert into posts (title,post) values (?,?)',[request.form['title'],request.form['content']])
       #db.execute('insert into posts (title,post) values ("second","i am jac")')
@@ -71,26 +70,25 @@ def add():
 
 
 @app.route('/view',methods=['GET','POST'])
-@login_required
 def  view():
   db = get_db()
   cur = db.execute('select title,catogory,t_comments,p_date,post from posts')
   entries = cur.fetchall()
   return render_template('home.html', entries=entries)
 
-  
+
+@app.route('/welcome')
+def welcome():
+   return render_template('welcome.html')    
 
 
-
-
-@app.route('/contact',methods=['GET','POST'])
+@app.route('/contact')
 @login_required
 def  contact():
-  return render_template('contact.html')
+  return render_template('contact.html')  
 
 
-
-@app.route('/about',methods=['GET','POST'])
+@app.route('/about')
 @login_required
 def about():
   return render_template('about.html')
@@ -98,7 +96,6 @@ def about():
 
 
 @app.route('/post/<post_title>',methods=['GET','POST'])
-
 def show_post(post_title):
   if request.method=='POST':
     if request.form['option']=="submit":
@@ -125,8 +122,6 @@ def show_post(post_title):
   comments = cur.fetchall()
   cur = db.execute('select title from posts')
   titles = cur.fetchall()
-  
-
   return render_template('singlepost.html',entries=entries,comments=comments,titles=titles)
 
 
@@ -140,14 +135,10 @@ def home():
       return redirect(url_for('login'))
     if request.form['opt']=="logout":
       return redirect(url_for('logout'))
-  if session['logged_in'] == True:
-    return redirect(url_for('view'))
-    
-  return render_template('home.html')
+  return redirect(url_for('view'))  
+  #return render_template('home.html')
 
-@app.route('/welcome')
-def welcome():
-   return render_template('welcome.html')  
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
